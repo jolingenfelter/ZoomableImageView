@@ -10,25 +10,21 @@ import UIKit
 
 class ZoomableImageView: UIScrollView, UIScrollViewDelegate {
     
-    fileprivate let imageView: UIImageView
+    fileprivate var imageView: UIImageView?
+    public var imageSize: CGSize!
+    
     
     override init(frame: CGRect) {
-        self.imageView = UIImageView(frame: frame)
         super.init(frame: frame)
-        self.customInit()
+        customInit()
     }
     
     required init?(coder aDecoder: NSCoder) {
-        self.imageView = UIImageView(frame: .zero)
         super.init(coder: aDecoder)
-        self.customInit()
+        customInit()
     }
     
     func customInit() {
-        
-        self.addSubview(imageView)
-        
-        self.backgroundColor = .white
         self.layer.borderColor = UIColor.black.cgColor
         self.layer.borderWidth = 2.0
         self.layer.cornerRadius = 15.0
@@ -37,68 +33,56 @@ class ZoomableImageView: UIScrollView, UIScrollViewDelegate {
         self.bouncesZoom = true
         self.decelerationRate = UIScrollViewDecelerationRateFast
         self.delegate = self
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
         
-        // Where this method is being called is important
         
-        //First load the image, then manipulate it.
-        loadImage(image: UIImage(named: "Jacopo")!)
+    }
+    
+    private func setZoomScale() {
         
-        guard let image = imageView.image else {
+        guard let imageView = imageView else {
             return
         }
         
-        self.imageView.frame = CGRect(origin: CGPoint.zero, size: image.size)
-        setZoomScale()
-        self.contentSize = image.size
-    
-        let imageCenter = CGPoint(x: image.size.width/2, y: image.size.height/2)
-        self.contentOffset = imageCenter
-        
-    }
-    
-    
-    func setZoomScale() {
-        
         let imageViewSize = imageView.bounds.size
-        print(imageViewSize)
         let scrollViewSize = self.bounds.size
-        
-        /*
-         
-         Something about these calculations is wrong.
-         All of them return 0.0, which apparently shrinks your image until you can't see it anymore.
-         
-         */
         let widthScale = scrollViewSize.width / imageViewSize.width
-        print(widthScale)
         let heightScale = scrollViewSize.height / imageViewSize.height
-        print(heightScale)
-        let minScale = min(widthScale, heightScale)
-        print(minScale)
-
-        /*
-         
-         Commenting one of the zoom scales shows your image again.
-         
-         */
-        self.minimumZoomScale = minScale
-        print(minimumZoomScale)
-//        self.zoomScale = minScale
-//        print(zoomScale)
+        self.minimumZoomScale = min(widthScale, heightScale)
+        self.zoomScale = 10.0
     }
     
-    func loadImage(image: UIImage) {
-        imageView.image = image
+    func showImage(image: UIImage) {
+        
+        if self.imageView != nil {
+            self.imageView?.removeFromSuperview()
+            self.imageView = nil
+        }
+        
+        self.imageView = UIImageView(image: image)
+        self.addSubview(imageView!)
+        configureForImageSize(image.size)
+        
     }
     
-    // UIScrollViewDelegate
+    private func configureForImageSize(_ imageSize: CGSize) {
+        self.imageSize = imageSize
+        self.contentSize = imageSize
+        setZoomScale()
+    }
+    
+    // MARK: - UIScrollViewDelegate
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return imageView
+        return self.imageView
     }
     
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        let imageViewSize = imageView.frame.size
+        
+        let imageViewSize = imageView!.frame.size
         let scrollViewSize = self.bounds.size
         
         let verticalPadding = imageViewSize.height < scrollViewSize.height ? (scrollViewSize.height - imageViewSize.height) / 2 : 0
@@ -108,3 +92,14 @@ class ZoomableImageView: UIScrollView, UIScrollViewDelegate {
     }
     
 }
+
+
+
+
+
+
+
+
+
+
+
