@@ -21,8 +21,8 @@ class ViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        view.addSubview(zoomableImageView)
         zoomableImageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(zoomableImageView)
         
         NSLayoutConstraint.activate([
             zoomableImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),

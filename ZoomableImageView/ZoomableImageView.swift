@@ -19,7 +19,7 @@ class ZoomableImageView: UIScrollView, UIScrollViewDelegate {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        self.imageView = UIImageView(frame: CGRect.zero)
+        self.imageView = UIImageView(frame: .zero)
         super.init(coder: aDecoder)
         self.customInit()
     }
@@ -32,15 +32,15 @@ class ZoomableImageView: UIScrollView, UIScrollViewDelegate {
         self.layer.borderColor = UIColor.black.cgColor
         self.layer.borderWidth = 2.0
         self.layer.cornerRadius = 15.0
-        self.showsVerticalScrollIndicator = false;
+        self.showsVerticalScrollIndicator = false
         self.showsHorizontalScrollIndicator = false
         self.bouncesZoom = true
         self.decelerationRate = UIScrollViewDecelerationRateFast
         self.delegate = self
         
         // Where this method is being called is important
-        setZoomScale()
         
+        //First load the image, then manipulate it.
         loadImage(image: UIImage(named: "Jacopo")!)
         
         guard let image = imageView.image else {
@@ -51,7 +51,6 @@ class ZoomableImageView: UIScrollView, UIScrollViewDelegate {
         setZoomScale()
         self.contentSize = image.size
     
-        
         let imageCenter = CGPoint(x: image.size.width/2, y: image.size.height/2)
         self.contentOffset = imageCenter
         
@@ -61,14 +60,31 @@ class ZoomableImageView: UIScrollView, UIScrollViewDelegate {
     func setZoomScale() {
         
         let imageViewSize = imageView.bounds.size
+        print(imageViewSize)
         let scrollViewSize = self.bounds.size
-        let widthScale = scrollViewSize.width/imageViewSize.width
-        let heightScale = scrollViewSize.height/imageViewSize.height
-        let minScale = min(widthScale, heightScale)
         
+        /*
+         
+         Something about these calculations is wrong.
+         All of them return 0.0, which apparently shrinks your image until you can't see it anymore.
+         
+         */
+        let widthScale = scrollViewSize.width / imageViewSize.width
+        print(widthScale)
+        let heightScale = scrollViewSize.height / imageViewSize.height
+        print(heightScale)
+        let minScale = min(widthScale, heightScale)
+        print(minScale)
+
+        /*
+         
+         Commenting one of the zoom scales shows your image again.
+         
+         */
         self.minimumZoomScale = minScale
-        self.zoomScale = minScale
-    
+        print(minimumZoomScale)
+//        self.zoomScale = minScale
+//        print(zoomScale)
     }
     
     func loadImage(image: UIImage) {
