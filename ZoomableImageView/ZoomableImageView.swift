@@ -38,7 +38,7 @@ class ZoomableImageView: UIScrollView, UIScrollViewDelegate {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        
+    
     }
     
     private func setZoomScale() {
@@ -52,7 +52,7 @@ class ZoomableImageView: UIScrollView, UIScrollViewDelegate {
         let widthScale = scrollViewSize.width / imageViewSize.width
         let heightScale = scrollViewSize.height / imageViewSize.height
         self.minimumZoomScale = min(widthScale, heightScale)
-        self.zoomScale = 10.0
+        self.maximumZoomScale = 10.0
     }
     
     func showImage(image: UIImage) {
@@ -64,7 +64,10 @@ class ZoomableImageView: UIScrollView, UIScrollViewDelegate {
         
         self.imageView = UIImageView(image: image)
         self.addSubview(imageView!)
+        print(self.frame)
         configureForImageSize(image.size)
+        let imageCenter = CGPoint(x: image.size.width/2, y: image.size.height/2)
+        self.contentOffset = imageCenter
         
     }
     
@@ -78,6 +81,11 @@ class ZoomableImageView: UIScrollView, UIScrollViewDelegate {
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.imageView
+    }
+    
+    func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
+        //let boundsCenter: CGPoint = CGPoint(x: self.bounds.midX, y: self.bounds.midY)
+        
     }
     
     func scrollViewDidZoom(_ scrollView: UIScrollView) {

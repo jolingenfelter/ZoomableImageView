@@ -15,12 +15,11 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        zoomableImageView.showImage(image: UIImage(named: "Jacopo")!)
         // Do any additional setup after loading the view, typically from a nib.
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
         
         zoomableImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(zoomableImageView)
@@ -41,6 +40,11 @@ class ViewController: UIViewController {
             cropBox.topAnchor.constraint(equalTo: zoomableImageView.topAnchor),
             cropBox.centerXAnchor.constraint(equalTo: zoomableImageView.centerXAnchor)
             ])
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        zoomableImageView.showImage(image: UIImage(named: "Jacopo")!)
     }
 
     override func didReceiveMemoryWarning() {
