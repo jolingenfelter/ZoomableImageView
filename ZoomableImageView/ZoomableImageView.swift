@@ -53,7 +53,7 @@ class ZoomableImageView: UIScrollView, UIScrollViewDelegate {
         self.minimumZoomScale = min(widthScale, heightScale)
         self.maximumZoomScale = 10.0
         self.contentOffset = CGPoint(x: imageViewSize.width/2, y: imageViewSize.height/2)
-        self.zoomScale = 1.0
+        self.zoomScale = self.minimumZoomScale
     }
     
     func showImage(image: UIImage) {
