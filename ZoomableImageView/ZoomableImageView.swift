@@ -11,7 +11,6 @@ import UIKit
 class ZoomableImageView: UIScrollView {
     
     fileprivate var imageView: UIImageView?
-    public var imageSize: CGSize!
     fileprivate var originalImage: UIImage?
     fileprivate var isFirstLoad = true
     
@@ -61,7 +60,6 @@ class ZoomableImageView: UIScrollView {
     }
     
     private func configureForImageSize(_ imageSize: CGSize) {
-        self.imageSize = imageSize
         self.contentSize = imageSize
         setZoomScale()
     }
