@@ -12,6 +12,7 @@ class ViewController: UIViewController {
     
     let cropBox = CropBox()
     let zoomableImageView = ZoomableImageView()
+    
     lazy var cropButton: UIButton = {
         let button = UIButton()
         button.setTitle("Crop", for: .normal)
@@ -25,7 +26,13 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navBarSetup()
         // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    func navBarSetup() {
+        let resetButton = UIBarButtonItem(barButtonSystemItem: .redo, target: self, action: #selector(revertToOriginal))
+        self.navigationItem.rightBarButtonItem = resetButton
     }
     
     override func viewWillLayoutSubviews() {
@@ -38,7 +45,7 @@ class ViewController: UIViewController {
             zoomableImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             zoomableImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             zoomableImageView.heightAnchor.constraint(equalTo: view.widthAnchor),
-            zoomableImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 40)
+            zoomableImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100)
             ])
         
         view.addSubview(cropBox)
@@ -64,12 +71,18 @@ class ViewController: UIViewController {
     
     @objc func cropImage() {
         do {
-            try zoomableImageView.cropImage()
+            try zoomableImageView.cropImage(completion: { (image) in
+               // Save image
+            })
         } catch ImageCroppingError.unknownError {
             print(ImageCroppingError.unknownError.rawValue)
         } catch let error {
             print(error.localizedDescription)
         }
+    }
+    
+    @objc func revertToOriginal() {
+        zoomableImageView.revertToOriginal() 
     }
     
     override func viewDidLayoutSubviews() {

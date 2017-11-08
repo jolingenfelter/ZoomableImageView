@@ -12,6 +12,8 @@ class ZoomableImageView: UIScrollView {
     
     fileprivate var imageView: UIImageView?
     public var imageSize: CGSize!
+    fileprivate var originalImage: UIImage?
+    fileprivate var isFirstLoad = true
     
     
     override init(frame: CGRect) {
@@ -51,6 +53,11 @@ class ZoomableImageView: UIScrollView {
         self.imageView = UIImageView(image: image)
         configureForImageSize(image.size)
         self.addSubview(imageView!)
+        
+        if isFirstLoad {
+            originalImage = image
+            isFirstLoad = false
+        }
     }
     
     private func configureForImageSize(_ imageSize: CGSize) {
@@ -75,7 +82,9 @@ class ZoomableImageView: UIScrollView {
         self.zoomScale = self.minimumZoomScale
     }
     
-    func cropImage() throws {
+    // MARK: - CropImage
+    
+    func cropImage(completion: (UIImage) -> ()) throws {
         
         guard let imageView = imageView else {
             return
@@ -94,7 +103,16 @@ class ZoomableImageView: UIScrollView {
         
         let newImage = UIImage(cgImage: croppedCGImage)
         showImage(image: newImage)
+        completion(newImage)
+    }
+    
+    func revertToOriginal() {
         
+        guard let originalImage = originalImage else {
+            return
+        }
+        
+        showImage(image: originalImage)
     }
     
 }
