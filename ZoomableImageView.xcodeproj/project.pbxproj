@@ -14,6 +14,7 @@
 		6303FF0A1FAFA3D3003AF74B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6303FF081FAFA3D3003AF74B /* LaunchScreen.storyboard */; };
 		6303FF121FAFA406003AF74B /* ZoomableImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6303FF111FAFA406003AF74B /* ZoomableImageView.swift */; };
 		6303FF141FAFA799003AF74B /* CropBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6303FF131FAFA799003AF74B /* CropBox.swift */; };
+		631BA54D1FB34A0800475227 /* ImageCroppingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631BA54C1FB34A0800475227 /* ImageCroppingError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		6303FF0B1FAFA3D3003AF74B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6303FF111FAFA406003AF74B /* ZoomableImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableImageView.swift; sourceTree = "<group>"; };
 		6303FF131FAFA799003AF74B /* CropBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CropBox.swift; sourceTree = "<group>"; };
+		631BA54C1FB34A0800475227 /* ImageCroppingError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCroppingError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 				6303FF081FAFA3D3003AF74B /* LaunchScreen.storyboard */,
 				6303FF0B1FAFA3D3003AF74B /* Info.plist */,
 				6303FF111FAFA406003AF74B /* ZoomableImageView.swift */,
+				631BA54C1FB34A0800475227 /* ImageCroppingError.swift */,
 				6303FF131FAFA799003AF74B /* CropBox.swift */,
 			);
 			path = ZoomableImageView;
@@ -144,6 +147,7 @@
 			files = (
 				6303FF021FAFA3D3003AF74B /* ViewController.swift in Sources */,
 				6303FF141FAFA799003AF74B /* CropBox.swift in Sources */,
+				631BA54D1FB34A0800475227 /* ImageCroppingError.swift in Sources */,
 				6303FF001FAFA3D3003AF74B /* AppDelegate.swift in Sources */,
 				6303FF121FAFA406003AF74B /* ZoomableImageView.swift in Sources */,
 			);

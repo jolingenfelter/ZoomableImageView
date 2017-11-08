@@ -12,6 +12,16 @@ class ViewController: UIViewController {
     
     let cropBox = CropBox()
     let zoomableImageView = ZoomableImageView()
+    lazy var cropButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Crop", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 10
+        button.layer.masksToBounds = true
+        button.backgroundColor = UIColor(red: 1/255, green: 151/255, blue: 246/255, alpha: 1.0)
+        button.addTarget(self, action: #selector(cropImage), for: .touchUpInside)
+        return button
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,11 +50,31 @@ class ViewController: UIViewController {
             cropBox.topAnchor.constraint(equalTo: zoomableImageView.topAnchor),
             cropBox.centerXAnchor.constraint(equalTo: zoomableImageView.centerXAnchor)
             ])
+        
+        view.addSubview(cropButton)
+        cropButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            cropButton.topAnchor.constraint(equalTo: zoomableImageView.bottomAnchor, constant: 80),
+            cropButton.centerXAnchor.constraint(equalTo: zoomableImageView.centerXAnchor),
+            cropButton.heightAnchor.constraint(equalToConstant: 40),
+            cropButton.widthAnchor.constraint(equalToConstant: 100)
+            ])
+    }
+    
+    @objc func cropImage() {
+        do {
+            try zoomableImageView.cropImage()
+        } catch ImageCroppingError.unknownError {
+            print(ImageCroppingError.unknownError.rawValue)
+        } catch let error {
+            print(error.localizedDescription)
+        }
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        zoomableImageView.showImage(image: UIImage(named: "FierceReptile")!)
+        zoomableImageView.showImage(image: UIImage(named: "Jacopo")!)
     }
 
     override func didReceiveMemoryWarning() {

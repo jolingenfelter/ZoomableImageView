@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ZoomableImageView: UIScrollView, UIScrollViewDelegate {
+class ZoomableImageView: UIScrollView {
     
     fileprivate var imageView: UIImageView?
     public var imageSize: CGSize!
@@ -40,6 +40,25 @@ class ZoomableImageView: UIScrollView, UIScrollViewDelegate {
         
     }
     
+    // Constraints myst be set on scrollView (or frame) in setup before this method is called
+    func showImage(image: UIImage) {
+        
+        if self.imageView != nil {
+            self.imageView?.removeFromSuperview()
+            self.imageView = nil
+        }
+        
+        self.imageView = UIImageView(image: image)
+        configureForImageSize(image.size)
+        self.addSubview(imageView!)
+    }
+    
+    private func configureForImageSize(_ imageSize: CGSize) {
+        self.imageSize = imageSize
+        self.contentSize = imageSize
+        setZoomScale()
+    }
+    
     private func setZoomScale() {
         
         guard let imageView = imageView else {
@@ -56,25 +75,33 @@ class ZoomableImageView: UIScrollView, UIScrollViewDelegate {
         self.zoomScale = self.minimumZoomScale
     }
     
-    func showImage(image: UIImage) {
+    func cropImage() throws {
         
-        if self.imageView != nil {
-            self.imageView?.removeFromSuperview()
-            self.imageView = nil
+        guard let imageView = imageView else {
+            return
         }
         
-        self.imageView = UIImageView(image: image)
-        self.addSubview(imageView!)
-        configureForImageSize(image.size)
+        let scale: CGFloat = 1/self.zoomScale
+        let x: CGFloat = self.contentOffset.x * scale
+        let y: CGFloat = self.contentOffset.y * scale
+        let width: CGFloat = self.frame.size.width * scale
+        let height: CGFloat = self.frame.size.height * scale
+        let cropRect = CGRect(x: x, y: y, width: width, height: height)
+        
+        guard let croppedCGImage = imageView.image?.cgImage?.cropping(to: cropRect) else {
+            throw ImageCroppingError.unknownError
+        }
+        
+        let newImage = UIImage(cgImage: croppedCGImage)
+        showImage(image: newImage)
+        
     }
     
-    private func configureForImageSize(_ imageSize: CGSize) {
-        self.imageSize = imageSize
-        self.contentSize = imageSize
-        setZoomScale()
-    }
-    
-    // MARK: - UIScrollViewDelegate
+}
+
+// MARK: - UIScrollViewDelegate
+
+extension ZoomableImageView: UIScrollViewDelegate {
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.imageView
