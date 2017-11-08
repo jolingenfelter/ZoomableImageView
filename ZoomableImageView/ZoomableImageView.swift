@@ -42,7 +42,7 @@ class ZoomableImageView: UIScrollView {
     }
     
     // Constraints myst be set on scrollView (or frame) in setup before this method is called
-    func showImage(image: UIImage) {
+    func showImage(_ image: UIImage) {
         
         if self.imageView != nil {
             self.imageView?.removeFromSuperview()

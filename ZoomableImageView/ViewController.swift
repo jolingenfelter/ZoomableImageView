@@ -87,7 +87,7 @@ class ViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        zoomableImageView.showImage(image: UIImage(named: "Jacopo")!)
+        zoomableImageView.showImage(UIImage(named: "Jacopo")!)
     }
 
     override func didReceiveMemoryWarning() {
